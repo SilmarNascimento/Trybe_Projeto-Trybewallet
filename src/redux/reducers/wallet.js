@@ -8,6 +8,8 @@ const INITIAL_STATE = {
 };
 
 const walletReducer = (state = INITIAL_STATE, action) => {
+  console.log(action);
+  console.log(state);
   switch (action.type) {
   case SAVE_CURRENCIES:
     return ({

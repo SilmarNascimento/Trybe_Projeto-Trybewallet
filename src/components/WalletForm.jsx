@@ -22,7 +22,8 @@ class WalletForm extends Component {
     });
   };
 
-  handleClick = () => {
+  handleClick = (event) => {
+    event.preventDefault();
     const {
       valueInput,
       descriptionInput,
@@ -33,7 +34,7 @@ class WalletForm extends Component {
     const { expenses, dispatch } = this.props;
     const expenseObj = {
       id: expenses.length,
-      valueInput,
+      valueInput: parseInt(valueInput, 10),
       descriptionInput,
       currencyInput,
       methodInput,
