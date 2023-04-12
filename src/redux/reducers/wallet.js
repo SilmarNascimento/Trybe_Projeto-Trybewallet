@@ -3,6 +3,7 @@ import {
   DELETE_EXPENSES,
   SAVE_CURRENCIES,
   SAVE_EXPENSES,
+  TOGGLE_EDIT,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -36,6 +37,11 @@ const walletReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       expenses: action.payload,
+    });
+  case TOGGLE_EDIT:
+    return ({
+      ...state,
+      editor: state.editor === false,
     });
   default:
     return state;

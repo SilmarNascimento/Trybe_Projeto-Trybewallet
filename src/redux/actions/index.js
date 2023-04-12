@@ -5,6 +5,7 @@ export const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
 export const DELETE_EXPENSES = 'DELETE_EXPENSES';
 export const ADD_EXPENSE_VALUE = 'ADD_EXPENSE_VALUE';
+export const TOGGLE_EDIT = 'TOGGLE_EDIT';
 
 export const saveEmail = (email) => ({
   type: SAVE_EMAIL,
@@ -29,6 +30,10 @@ export const deleteExpenses = (data) => ({
 export const addExpenseValue = (expense) => ({
   type: ADD_EXPENSE_VALUE,
   payload: expense,
+});
+
+export const toggleEdit = () => ({
+  type: TOGGLE_EDIT,
 });
 
 const fetchAPI = async (URL) => {

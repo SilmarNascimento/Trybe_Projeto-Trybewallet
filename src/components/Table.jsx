@@ -15,6 +15,10 @@ class Table extends Component {
     dispatch(addExpenseValue(-quotationValue));
   };
 
+  /* handleEdit = (id) => {
+
+  }; */
+
   render() {
     const renderContent = () => {
       const { expenses } = this.props;
@@ -43,7 +47,7 @@ class Table extends Component {
             <td>Real</td>
             <td>
               <button
-                onClick={ this.handleClick }
+                onClick={ () => this.handleEdit(id) }
                 data-testid="edit-btn"
               >
                 Editar

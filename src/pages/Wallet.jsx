@@ -16,7 +16,7 @@ class Wallet extends React.Component {
     return (
       <>
         <Header />
-        <WalletForm />
+        { !editor && <WalletForm /> }
         <Table />
       </>
     );
