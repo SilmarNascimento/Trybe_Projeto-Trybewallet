@@ -10,8 +10,6 @@ const INITIAL_STATE = {
 };
 
 const walletReducer = (state = INITIAL_STATE, action) => {
-  console.log(action);
-  console.log(state);
   const prevSum = state.sumExpense === '' ? 0 : parseFloat(state.sumExpense);
   switch (action.type) {
   case ADD_EXPENSE_VALUE:

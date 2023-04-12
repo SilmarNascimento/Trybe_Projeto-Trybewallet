@@ -158,11 +158,11 @@ WalletForm.propTypes = {
   expenses: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      valueInput: PropTypes.string.isRequired,
-      descriptionInput: PropTypes.string.isRequired,
-      currencyInput: PropTypes.string.isRequired,
-      methodInput: PropTypes.string.isRequired,
-      tagInput: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      currency: PropTypes.string.isRequired,
+      method: PropTypes.string.isRequired,
+      tag: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
   dispatch: PropTypes.func.isRequired,
