@@ -31,7 +31,7 @@ class Login extends React.Component {
     const { inputEmail, password } = this.state;
     const regex = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/g;
     const minLength = 6;
-    const isValid = regex.test(inputEmail) && (password.length > minLength);
+    const isValid = regex.test(inputEmail) && (password.length >= minLength);
     return (
       <>
         <label htmlFor="inputEmail">

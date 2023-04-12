@@ -1,7 +1,7 @@
 import { ADD_EXPENSE_VALUE, SAVE_CURRENCIES, SAVE_EXPENSES } from '../actions';
 
 const INITIAL_STATE = {
-  totalOutlay: 0,
+  sumExpense: '0',
   currency: 'BRL',
   currencies: [],
   expenses: [],
@@ -12,11 +12,12 @@ const INITIAL_STATE = {
 const walletReducer = (state = INITIAL_STATE, action) => {
   console.log(action);
   console.log(state);
+  const prevSum = state.sumExpense === '' ? 0 : parseFloat(state.sumExpense);
   switch (action.type) {
   case ADD_EXPENSE_VALUE:
     return ({
       ...state,
-      totalOutlay: state.totalOutlay + parseFloat(action.payload),
+      sumExpense: (prevSum + parseFloat(action.payload)).toFixed(2),
     });
   case SAVE_CURRENCIES:
     return ({

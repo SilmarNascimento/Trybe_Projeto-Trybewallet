@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuotation, saveExpenses } from '../redux/actions';
+import { fetchQuotation } from '../redux/actions';
 
 class WalletForm extends Component {
   constructor() {
     super();
     this.state = {
-      valueInput: 0,
+      valueInput: '',
       descriptionInput: '',
       currencyInput: 'USD',
       methodInput: 'Dinheiro',
@@ -22,7 +22,7 @@ class WalletForm extends Component {
     });
   };
 
-  handleClick = (event) => {
+  handleClick = async (event) => {
     event.preventDefault();
     const {
       valueInput,
@@ -34,14 +34,21 @@ class WalletForm extends Component {
     const { expenses, dispatch } = this.props;
     const expenseObj = {
       id: expenses.length,
-      valueInput: parseInt(valueInput, 10),
-      descriptionInput,
-      currencyInput,
-      methodInput,
-      tagInput,
+      value: valueInput,
+      description: descriptionInput,
+      currency: currencyInput,
+      method: methodInput,
+      tag: tagInput,
+      exchangeRates: {},
     };
-    dispatch(saveExpenses(expenseObj));
-    dispatch(fetchQuotation(valueInput, currencyInput));
+    dispatch(fetchQuotation(parseFloat(valueInput), currencyInput, expenseObj));
+    this.setState({
+      valueInput: '',
+      descriptionInput: '',
+      currencyInput: 'USD',
+      methodInput: 'Dinheiro',
+      tagInput: 'Alimentação',
+    });
   };
 
   render() {
@@ -67,7 +74,7 @@ class WalletForm extends Component {
           <label htmlFor="valueInput">
             Valor da Despesa
             <input
-              type="number"
+              type="text"
               id="valueInput"
               name="valueInput"
               value={ valueInput }
@@ -108,8 +115,8 @@ class WalletForm extends Component {
               onChange={ this.handleChange }
             >
               <option>Dinheiro</option>
-              <option>Cartão de Crédito</option>
-              <option>Cartão de Débito</option>
+              <option>Cartão de crédito</option>
+              <option>Cartão de débito</option>
             </select>
           </label>
           <label htmlFor="tagInput">
@@ -151,7 +158,7 @@ WalletForm.propTypes = {
   expenses: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      valueInput: PropTypes.number.isRequired,
+      valueInput: PropTypes.string.isRequired,
       descriptionInput: PropTypes.string.isRequired,
       currencyInput: PropTypes.string.isRequired,
       methodInput: PropTypes.string.isRequired,

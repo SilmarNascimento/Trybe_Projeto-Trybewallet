@@ -1,5 +1,5 @@
 // Coloque aqui suas actions
-const URL_CURRENCIES = 'https://economia.awesomeapi.com.br/json/all';
+export const URL_CURRENCIES = 'https://economia.awesomeapi.com.br/json/all';
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
@@ -37,11 +37,10 @@ export const fetchCurrencies = () => async (dispatch) => {
   dispatch(saveCurrencies(arrayCurrencies));
 };
 
-export const fetchQuotation = (value, currency) => async (dispatch) => {
-  console.log(value);
-  console.log(currency);
+export const fetchQuotation = (value, currency, expenseObj) => async (dispatch) => {
   const data = await fetchAPI(URL_CURRENCIES);
+  expenseObj.exchangeRates = data;
   const quotationValue = value * data[currency].ask;
-  console.log(quotationValue);
+  dispatch(saveExpenses(expenseObj));
   dispatch(addExpenseValue(quotationValue));
 };
