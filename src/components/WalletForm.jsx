@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveExpenses } from '../redux/actions';
+import { fetchQuotation, saveExpenses } from '../redux/actions';
 
 class WalletForm extends Component {
   constructor() {
@@ -41,6 +41,7 @@ class WalletForm extends Component {
       tagInput,
     };
     dispatch(saveExpenses(expenseObj));
+    dispatch(fetchQuotation(valueInput, currencyInput));
   };
 
   render() {

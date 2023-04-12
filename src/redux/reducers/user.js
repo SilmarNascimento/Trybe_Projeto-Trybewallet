@@ -1,7 +1,6 @@
 import { SAVE_EMAIL } from '../actions';
 
 const INITIAL_STATE = {
-  userName: '',
   email: '',
 };
 
