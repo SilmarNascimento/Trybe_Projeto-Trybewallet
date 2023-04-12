@@ -1,8 +1,20 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { deleteExpenses, addExpenseValue } from '../redux/actions';
 
 class Table extends Component {
+  handleDelete = (id) => {
+    console.log(id);
+    const { expenses, dispatch } = this.props;
+    const newExpenses = expenses.filter((expense) => expense.id !== id);
+    dispatch(deleteExpenses(newExpenses));
+    const removedExpense = expenses.find((expense) => expense.id === id);
+    const { currency, value, exchangeRates } = removedExpense;
+    const quotationValue = parseFloat(value) * parseFloat(exchangeRates[currency].ask);
+    dispatch(addExpenseValue(-quotationValue));
+  };
+
   render() {
     const renderContent = () => {
       const { expenses } = this.props;
@@ -29,7 +41,20 @@ class Table extends Component {
             <td>{ (parseFloat(quotationUsed)).toFixed(2) }</td>
             <td>{ convertedValue.toFixed(2) }</td>
             <td>Real</td>
-            <td><button>Editar/Excluir</button></td>
+            <td>
+              <button
+                onClick={ this.handleClick }
+                data-testid="edit-btn"
+              >
+                Editar
+              </button>
+              <button
+                onClick={ () => this.handleDelete(id) }
+                data-testid="delete-btn"
+              >
+                Excluir
+              </button>
+            </td>
           </tr>
         );
       });
@@ -81,4 +106,5 @@ Table.propTypes = {
       ).isRequired,
     }).isRequired,
   ).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };

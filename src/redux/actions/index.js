@@ -3,6 +3,7 @@ const URL_CURRENCIES = 'https://economia.awesomeapi.com.br/json/all';
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
+export const DELETE_EXPENSES = 'DELETE_EXPENSES';
 export const ADD_EXPENSE_VALUE = 'ADD_EXPENSE_VALUE';
 
 export const saveEmail = (email) => ({
@@ -17,6 +18,11 @@ export const saveCurrencies = (data) => ({
 
 export const saveExpenses = (data) => ({
   type: SAVE_EXPENSES,
+  payload: data,
+});
+
+export const deleteExpenses = (data) => ({
+  type: DELETE_EXPENSES,
   payload: data,
 });
 

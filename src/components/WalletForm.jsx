@@ -32,8 +32,9 @@ class WalletForm extends Component {
       tagInput,
     } = this.state;
     const { expenses, dispatch } = this.props;
+    const maxId = expenses.length - 1;
     const expenseObj = {
-      id: expenses.length,
+      id: expenses.length === 0 ? 0 : expenses[maxId].id + 1,
       value: valueInput,
       description: descriptionInput,
       currency: currencyInput,
