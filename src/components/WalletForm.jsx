@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   addExpenseValue,
   changeExpenses,
+  findTotalExpense,
   fetchQuotation,
   toggleEdit,
 } from '../redux/actions';
@@ -38,7 +39,7 @@ class WalletForm extends Component {
     } = this.state;
     const { expenses, dispatch } = this.props;
     const maxId = expenses.length - 1;
-    const expenseObj = {
+    const newExpenseObj = {
       id: expenses.length === 0 ? 0 : expenses[maxId].id + 1,
       value: valueInput,
       description: descriptionInput,
@@ -47,7 +48,7 @@ class WalletForm extends Component {
       tag: tagInput,
       exchangeRates: {},
     };
-    dispatch(fetchQuotation(parseFloat(valueInput), currencyInput, expenseObj));
+    dispatch(fetchQuotation(expenses, newExpenseObj));
     this.setState({
       valueInput: '',
       descriptionInput: '',
@@ -57,19 +58,11 @@ class WalletForm extends Component {
     });
   };
 
-  findTotalExpense = (array) => {
-    const valueArray = array.map((item) => {
-      const { value, currency, exchangeRates } = item;
-      const quotation = parseFloat(exchangeRates[currency].ask);
-      return parseFloat(value) * quotation;
-    });
-    return valueArray.reducer((acc, curr) => acc + curr, 0);
-  };
-
-  handleFinishedEdit = () => {
-    const { expenses, idToEdit } = this.props;
-    const { exchangeRates } = expenses;
+  handleFinishedEdit = (event) => {
+    event.preventDefault();
+    const { expenses, idToEdit, dispatch } = this.props;
     const expenseToEdit = expenses.find((expense) => expense.id === idToEdit);
+    const { exchangeRates } = expenseToEdit;
     const index = expenses.indexOf(expenseToEdit);
     const {
       valueInput,
@@ -90,7 +83,8 @@ class WalletForm extends Component {
     console.log(editedExpense);
     const newExpenses = [...expenses];
     newExpenses[index] = editedExpense;
-    const totalExpense = this.findTotalExpense(newExpenses);
+    console.log(newExpenses);
+    const totalExpense = findTotalExpense(newExpenses);
     dispatch(addExpenseValue(totalExpense));
     dispatch(changeExpenses(newExpenses));
     dispatch(toggleEdit());
@@ -105,6 +99,7 @@ class WalletForm extends Component {
       tagInput,
     } = this.state;
     const { currencies, editor } = this.props;
+    console.log(editor);
     const renderCurrencyList = currencies.map((currency) => (
       <option
         key={ currency }
@@ -112,20 +107,20 @@ class WalletForm extends Component {
         {currency}
       </option>
     ));
-    const renderBtnEditar = () => {
+    const renderBtnEditar = () => (
       <button
         onClick={ this.handleFinishedEdit }
       >
         Editar Despesas
-      </button>;
-    };
-    const renderBtnAdicionar = () => {
+      </button>
+    );
+    const renderBtnAdicionar = () => (
       <button
         onClick={ this.handleClick }
       >
         Adicionar Despesas
-      </button>;
-    };
+      </button>
+    );
     return (
       <form action="">
         <fieldset>
@@ -194,7 +189,7 @@ class WalletForm extends Component {
               <option>Saúde</option>
             </select>
           </label>
-          { editor === true ? renderBtnEditar() : renderBtnAdicionar }
+          { editor === true ? renderBtnEditar() : renderBtnAdicionar() }
         </fieldset>
       </form>
     );

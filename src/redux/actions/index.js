@@ -49,10 +49,21 @@ export const fetchCurrencies = () => async (dispatch) => {
   dispatch(saveCurrencies(arrayCurrencies));
 };
 
-export const fetchQuotation = (value, currency, expenseObj) => async (dispatch) => {
+export const findTotalExpense = (array) => {
+  const valueArray = array.map((item) => {
+    const { value, currency, exchangeRates } = item;
+    const quotation = parseFloat(exchangeRates[currency].ask);
+    return parseFloat(value) * quotation;
+  });
+  return valueArray.reduce((total, number) => total + number, 0);
+};
+
+export const fetchQuotation = (expenses, expenseObj) => async (dispatch) => {
   const data = await fetchAPI(URL_CURRENCIES);
-  expenseObj.exchangeRates = data;
-  const quotationValue = value * data[currency].ask;
   dispatch(saveExpenses(expenseObj));
-  dispatch(addExpenseValue(quotationValue));
+  expenseObj.exchangeRates = data;
+  const { value, currency } = expenseObj;
+  const quotationValue = parseFloat(value) * parseFloat(data[currency].ask);
+  const prevSum = findTotalExpense(expenses);
+  dispatch(addExpenseValue(quotationValue + prevSum));
 };

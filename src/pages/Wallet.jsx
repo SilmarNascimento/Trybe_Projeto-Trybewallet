@@ -16,14 +16,18 @@ class Wallet extends React.Component {
     return (
       <>
         <Header />
-        { !editor && <WalletForm /> }
+        <WalletForm />
         <Table />
       </>
     );
   }
 }
 
-export default connect()(Wallet);
+const mapStateToProps = ({ wallet }) => ({
+  ...wallet,
+});
+
+export default connect(mapStateToProps)(Wallet);
 
 Wallet.propTypes = {
   dispatch: PropTypes.func.isRequired,

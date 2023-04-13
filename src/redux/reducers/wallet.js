@@ -16,12 +16,11 @@ const INITIAL_STATE = {
 };
 
 const walletReducer = (state = INITIAL_STATE, action) => {
-  const prevSum = state.sumExpense === '' ? 0 : parseFloat(state.sumExpense);
   switch (action.type) {
   case ADD_EXPENSE_VALUE:
     return ({
       ...state,
-      sumExpense: (prevSum + parseFloat(action.payload)).toFixed(2),
+      sumExpense: (parseFloat(action.payload)).toFixed(2),
     });
   case SAVE_CURRENCIES:
     return ({
