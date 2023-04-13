@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuotation } from '../redux/actions';
+import {
+  addExpenseValue,
+  changeExpenses,
+  fetchQuotation,
+  toggleEdit,
+} from '../redux/actions';
 
 class WalletForm extends Component {
   constructor() {
@@ -52,6 +57,45 @@ class WalletForm extends Component {
     });
   };
 
+  findTotalExpense = (array) => {
+    const valueArray = array.map((item) => {
+      const { value, currency, exchangeRates } = item;
+      const quotation = parseFloat(exchangeRates[currency].ask);
+      return parseFloat(value) * quotation;
+    });
+    return valueArray.reducer((acc, curr) => acc + curr, 0);
+  };
+
+  handleFinishedEdit = () => {
+    const { expenses, idToEdit } = this.props;
+    const { exchangeRates } = expenses;
+    const expenseToEdit = expenses.find((expense) => expense.id === idToEdit);
+    const index = expenses.indexOf(expenseToEdit);
+    const {
+      valueInput,
+      descriptionInput,
+      currencyInput,
+      methodInput,
+      tagInput,
+    } = this.state;
+    const editedExpense = {
+      id: idToEdit,
+      value: valueInput,
+      description: descriptionInput,
+      currency: currencyInput,
+      method: methodInput,
+      tag: tagInput,
+      exchangeRates,
+    };
+    console.log(editedExpense);
+    const newExpenses = [...expenses];
+    newExpenses[index] = editedExpense;
+    const totalExpense = this.findTotalExpense(newExpenses);
+    dispatch(addExpenseValue(totalExpense));
+    dispatch(changeExpenses(newExpenses));
+    dispatch(toggleEdit());
+  };
+
   render() {
     const {
       valueInput,
@@ -60,7 +104,7 @@ class WalletForm extends Component {
       methodInput,
       tagInput,
     } = this.state;
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     const renderCurrencyList = currencies.map((currency) => (
       <option
         key={ currency }
@@ -68,6 +112,20 @@ class WalletForm extends Component {
         {currency}
       </option>
     ));
+    const renderBtnEditar = () => {
+      <button
+        onClick={ this.handleFinishedEdit }
+      >
+        Editar Despesas
+      </button>;
+    };
+    const renderBtnAdicionar = () => {
+      <button
+        onClick={ this.handleClick }
+      >
+        Adicionar Despesas
+      </button>;
+    };
     return (
       <form action="">
         <fieldset>
@@ -136,11 +194,7 @@ class WalletForm extends Component {
               <option>Saúde</option>
             </select>
           </label>
-          <button
-            onClick={ this.handleClick }
-          >
-            Adicionar Despesas
-          </button>
+          { editor === true ? renderBtnEditar() : renderBtnAdicionar }
         </fieldset>
       </form>
     );
@@ -155,6 +209,8 @@ const mapStateToProps = ({ user, wallet }) => ({
 export default connect(mapStateToProps)(WalletForm);
 
 WalletForm.propTypes = {
+  idToEdit: PropTypes.number.isRequired,
+  editor: PropTypes.bool.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   expenses: PropTypes.arrayOf(
     PropTypes.shape({

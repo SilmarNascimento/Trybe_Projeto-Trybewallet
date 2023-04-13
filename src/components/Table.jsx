@@ -1,23 +1,24 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { deleteExpenses, addExpenseValue } from '../redux/actions';
+import { changeExpenses, addExpenseValue, toggleEdit } from '../redux/actions';
 
 class Table extends Component {
   handleDelete = (id) => {
     console.log(id);
     const { expenses, dispatch } = this.props;
     const newExpenses = expenses.filter((expense) => expense.id !== id);
-    dispatch(deleteExpenses(newExpenses));
+    dispatch(changeExpenses(newExpenses));
     const removedExpense = expenses.find((expense) => expense.id === id);
     const { currency, value, exchangeRates } = removedExpense;
     const quotationValue = parseFloat(value) * parseFloat(exchangeRates[currency].ask);
     dispatch(addExpenseValue(-quotationValue));
   };
 
-  /* handleEdit = (id) => {
-
-  }; */
+  handleEdit = (id) => {
+    const { dispatch } = this.props;
+    dispatch(toggleEdit(id));
+  };
 
   render() {
     const renderContent = () => {

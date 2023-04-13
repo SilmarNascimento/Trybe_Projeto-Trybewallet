@@ -3,7 +3,7 @@ const URL_CURRENCIES = 'https://economia.awesomeapi.com.br/json/all';
 export const SAVE_EMAIL = 'SAVE_EMAIL';
 export const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
 export const SAVE_EXPENSES = 'SAVE_EXPENSES';
-export const DELETE_EXPENSES = 'DELETE_EXPENSES';
+export const CHANGE_EXPENSES = 'CHANGE_EXPENSES';
 export const ADD_EXPENSE_VALUE = 'ADD_EXPENSE_VALUE';
 export const TOGGLE_EDIT = 'TOGGLE_EDIT';
 
@@ -22,8 +22,8 @@ export const saveExpenses = (data) => ({
   payload: data,
 });
 
-export const deleteExpenses = (data) => ({
-  type: DELETE_EXPENSES,
+export const changeExpenses = (data) => ({
+  type: CHANGE_EXPENSES,
   payload: data,
 });
 
@@ -32,8 +32,9 @@ export const addExpenseValue = (expense) => ({
   payload: expense,
 });
 
-export const toggleEdit = () => ({
+export const toggleEdit = (id) => ({
   type: TOGGLE_EDIT,
+  payload: id,
 });
 
 const fetchAPI = async (URL) => {

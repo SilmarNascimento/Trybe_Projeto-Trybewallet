@@ -1,6 +1,6 @@
 import {
   ADD_EXPENSE_VALUE,
-  DELETE_EXPENSES,
+  CHANGE_EXPENSES,
   SAVE_CURRENCIES,
   SAVE_EXPENSES,
   TOGGLE_EDIT,
@@ -33,7 +33,7 @@ const walletReducer = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: [...state.expenses, action.payload],
     });
-  case DELETE_EXPENSES:
+  case CHANGE_EXPENSES:
     return ({
       ...state,
       expenses: action.payload,
@@ -42,6 +42,7 @@ const walletReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       editor: state.editor === false,
+      idToEdit: state.editor === false ? parseInt(action.payload, 10) : 0,
     });
   default:
     return state;
