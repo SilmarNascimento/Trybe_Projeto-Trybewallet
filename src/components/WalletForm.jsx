@@ -80,10 +80,8 @@ class WalletForm extends Component {
       tag: tagInput,
       exchangeRates,
     };
-    console.log(editedExpense);
     const newExpenses = [...expenses];
     newExpenses[index] = editedExpense;
-    console.log(newExpenses);
     const totalExpense = findTotalExpense(newExpenses);
     dispatch(addExpenseValue(totalExpense));
     dispatch(changeExpenses(newExpenses));
@@ -99,7 +97,6 @@ class WalletForm extends Component {
       tagInput,
     } = this.state;
     const { currencies, editor } = this.props;
-    console.log(editor);
     const renderCurrencyList = currencies.map((currency) => (
       <option
         key={ currency }

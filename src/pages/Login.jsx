@@ -22,7 +22,6 @@ class Login extends React.Component {
   handleClick = () => {
     const { inputEmail } = this.state;
     const { dispatch, history } = this.props;
-    console.log(this.props);
     dispatch(saveEmail(inputEmail));
     history.push('/carteira');
   };
