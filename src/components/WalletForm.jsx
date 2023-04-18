@@ -107,6 +107,7 @@ class WalletForm extends Component {
     const renderBtnEditar = () => (
       <button
         onClick={ this.handleFinishedEdit }
+        data-testid="edit-expense"
       >
         Editar Despesas
       </button>
@@ -114,6 +115,7 @@ class WalletForm extends Component {
     const renderBtnAdicionar = () => (
       <button
         onClick={ this.handleClick }
+        data-testid="add-expense"
       >
         Adicionar Despesas
       </button>

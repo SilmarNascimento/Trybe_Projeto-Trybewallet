@@ -158,19 +158,45 @@ describe('Verifica se o componente Table é renderizado corretamente', () => {
       expect(fetch).toHaveBeenCalledTimes(1);
       expect(fetch).toHaveBeenCalledWith(URL);
     });
-    const addBtn = await screen.findByRole('button', {
-      name: /adicionar despesas/i,
-    });
-    expect(addBtn).toBeInTheDocument();
-
+    const addBtn = screen.getByTestId('add-expense');
     const editBtn = screen.getByTestId('edit-btn');
+    expect(addBtn).toBeInTheDocument();
     expect(editBtn).toBeInTheDocument();
 
     userEvent.click(editBtn);
-    expect(addBtn).not.toBeInTheDocument();
-    const finishEditBtn = await screen.findByRole('button', {
-      name: /despesas/i,
-    });
+    const finishEditBtn = await screen.findByTestId('edit-expense');
     expect(finishEditBtn).toBeInTheDocument();
+
+    const valueElement = screen.getByLabelText(/valor da despesa/i);
+    userEvent.type(valueElement, '5');
+    const currencyElement = screen.getByLabelText(/moeda/i);
+    await screen.findByRole('option', {
+      name: /USD/i,
+    });
+    userEvent.selectOptions(currencyElement, 'USD');
+    const methodElement = screen.getByTestId(/method-input/i);
+    userEvent.selectOptions(methodElement, methodOptions[2]);
+
+    userEvent.click(finishEditBtn);
+    const { wallet: { expenses } } = store.getState();
+
+    expect(expenses[0].id).toBe(0);
+    expect(expenses[0].value).toBe('5');
+    expect(expenses[0].currency).toBe('USD');
+    expect(expenses[0].method).toBe('Cartão de débito');
+
+    const valuecell = await screen.findByRole('cell', {
+      name: /5\.00/i,
+    });
+    const currencyCell = await screen.findByRole('cell', {
+      name: 'Dólar Americano/Real Brasileiro',
+    });
+    const methodCell = await screen.findByRole('cell', {
+      name: /cartão de débito/i,
+    });
+
+    expect(valuecell).toBeInTheDocument();
+    expect(currencyCell).toBeInTheDocument();
+    expect(methodCell).toBeInTheDocument();
   });
 });
